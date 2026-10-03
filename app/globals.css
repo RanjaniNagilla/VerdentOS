@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode toggling in Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  color-scheme: light;
+}
+
+.dark {
+  --background: #020617; /* Slate 950 */
+  --foreground: #f8fafc;
+  color-scheme: dark;
+}
+
+@layer components {
+  :root {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+  }
+}
+
+/* Base styles with optimized, hardware-accelerated transitions */
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  /* Fast, lightweight transition specifically for the root container */
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+/* Prevent layout jank & lag on interactive components during theme switches */
+button, 
+a, 
+input, 
+select {
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable heavy global animations if the user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
